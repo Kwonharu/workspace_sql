@@ -1,4 +1,6 @@
---DDL (테이블)
+/*------------------------------------------
+ DDL (테이블)
+------------------------------------------*/
 
 --테이블 생성
 create table book(
@@ -36,23 +38,36 @@ drop table article;
 
 
 
+/*-----------------------------------
+테이블 만들기
+-----------------------------------*/
+--author 테이블
+create table author(
+    author_id       NUMBER(10),
+    author_name     varchar2(100)   not null,
+    author_desc     varchar2(500),
+    PRIMARY KEY(author_id)
+);
+
+--book 테이블
+create table book(
+    book_id     number(10),
+    title       varchar2(100)   not null,
+    pubs        varchar2(100),
+    pub_date    date,
+    author_id   NUMBER(10),
+    primary key(book_id),
+    constraint book_fk foreign key (author_id) references author(author_id)
+  --   제약      샌즈      FK   (내 테이블 컬럼)  참조   참조할 테이블(칼럼)
+);
+
 
 select *
-from article;
-
-drop table book;
+from book;
 
 select *
 from tab;
 
-
-/*
-- 테이블, 컬럼 명명 규칙
-문자로 시작
-30자 이내
-A-Z, a-z, 0-9, _, $, #
-오라클 예약어는 사용할 수 없음
-*/
 
 
 
