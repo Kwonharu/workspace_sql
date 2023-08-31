@@ -5,7 +5,6 @@ drop table author;
 drop SEQUENCE seq_author_id;
 
 
-
 --table
 create table book(
     book_id     NUMBER(5),
@@ -98,6 +97,26 @@ values(seq_author_id.nextVal, '반다이 남코', '8에 요시 나오는 거 맞
 insert into author(author_id, author_name, author_desc)
 values(seq_author_id.nextVal, '베데스다', '그들은 신이야');
 
+/*
+시퀀스 적용 안 됨 젠장
+
+--INSERT ALL
+insert all into author(author_id, author_name, author_desc)
+values(seq_author_id.nextVal, '캡콤', '하이하이 로크만')
+insert all into author(author_id, author_name, author_desc)
+values(seq_author_id.nextVal, '토비폭스', '박수칠 때 못 떠남')
+select *
+from dual;
+
+--UNION ALL 
+insert into author(author_id, author_name, author_desc)
+select seq_author_id.nextVal, '캡콤', '하이하이 로크만'
+from dual union all
+select seq_author_id.nextVal, '토비폭스', '박수칠 때 못 떠남'
+from dual;
+*/
+
+
 
 --출력
 select  book_id, 
@@ -129,15 +148,53 @@ select *
 from author;
 
 
+insert into author
+values(seq_author_id.nextVal, 'Team Cherry', '인디 메트로바이나의 신');
 
 
+delete from author
+where author_id = 7;
+
+update author
+set author_name = 'Dennaton Games',
+    author_desc = '뜨거운선 우리엄마'
+where author_name = 'Ubisoft'
+and author_desc = '유니티로 먹고삼';
+
+select  author_id,
+        author_name,
+        author_desc
+from author;
+
+ROLLBACK;
 
 
+select  b.book_id,
+        b.title,
+        b.pubs,
+        b.pub_date,
+        b.author_id,
+        a.author_name
+from book b, (select  author_id,
+                      author_name
+              from author) a
+where b.author_id = a.author_id;
 
 
+select  b.book_id,          b.title,          b.pubs,          b.pub_date,          b.author_id,          a.author_name  from book b, (select  author_id,                        author_name                from author) a  where b.author_id = a.author_id; 
 
 
+insert into book
+values(seq_book_id.nextVal, 'Gta5', 'X-box', '2013-09-17', 13);
 
+delete from book
+where book_id = 10;
 
+update book
+set title = 'asdf',
+    pubs = 'asdf',
+    pub_date = '2000-01-01',
+    author_id = 10
+where book_id = '10';
 
 
