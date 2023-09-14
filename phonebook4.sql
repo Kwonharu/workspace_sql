@@ -23,6 +23,13 @@ from person
 where person_id = 1;
 
 
+update person
+set  name = '반 다크 홈',
+     hp = 'deep dark',
+     company = 'fantasy'
+where person_id = 99; 
+
+
 select *
 from person;
 
