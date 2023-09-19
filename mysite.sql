@@ -18,6 +18,7 @@ INCREMENT by 1
 start with 1
 nocache;
 
+
 --insert
 insert into users
 values(seq_users_no.nextval, 'sua', '0314', '수아', 'female');
@@ -29,6 +30,14 @@ select  no,
 from users
 where no = 1
 and password = '0314';
+
+select  no,
+        id,
+        password,
+        name,
+        gender
+from users
+where no = 1;
 
 
 --update
@@ -45,7 +54,7 @@ where no = 9;
 
 --delete
 delete users
-where no = 21;
+where no = 33;
 
 
 select *
@@ -164,23 +173,30 @@ from board b, users u
 where b.user_no = u.no;
 
 
+SELECT  BO.no,
+        BO.title,
+        BO.content,
+        US.name,
+        BO.hit,
+        TO_CHAR(BO.reg_date, 'YYYY-MM-DD HH:MI') regDate,
+        US.no userNo
+FROM board BO, users US
+WHERE BO.user_no = US.no				 
+order by reg_date desc;
+
+
+
 --boardSelect
 select  u.name,
         b.hit,
-        b.reg_date,
+        to_char(b.reg_date, 'YYYY-MM-DD HH:MI') regDate,
         b.title,
         b.content,
         b.no,
-        b.user_no
+        b.user_no userNo
 from board b, users u
 where b.user_no = u.no
 and b.no = 9;
-
-
---boardDelete
-delete board
-where no = 0;
-
 
 
 
@@ -190,10 +206,20 @@ set  hit = hit + 1
 where no = 1; 
 
 
+--update board
+--set no = 10
+--where no = 14;
+
+update board
+set title = 'asd',
+    content = 'asd'
+where no = 10;
 
 --delete
 delete board
 where no = 5;
+
+
 
 
 
@@ -203,6 +229,7 @@ from board;
 
 commit;
 
+rollback;
 
 
 
