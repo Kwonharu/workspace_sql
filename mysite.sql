@@ -57,10 +57,23 @@ delete users
 where no = 33;
 
 
+
+--idCheck
+select  no,
+        id,
+        name,
+        gender
+from users
+where id = 'asd';
+
+
+
+
+
+
+
 select *
 from users;
-
-
 
 
 SELECT *
@@ -71,6 +84,9 @@ WHERE TABLE_NAME = 'USERS';   -- 조회 할 테이블 명
 
 
 commit;
+
+
+
 
 
 
@@ -182,7 +198,7 @@ SELECT  BO.no,
         US.no userNo
 FROM board BO, users US
 WHERE BO.user_no = US.no				 
-order by reg_date desc;
+order by no asc;
 
 
 
@@ -197,6 +213,47 @@ select  u.name,
 from board b, users u
 where b.user_no = u.no
 and b.no = 9;
+
+
+
+-- select 페이징 rownum
+select  ort.rn,
+        ort.no,
+        ort.title,
+        ort.content,
+        ort.hit,
+        ort.regDate,
+        ort.userNo,
+        ort.name
+from (select rownum rn,
+             ot.no,
+             ot.title,
+             ot.content,
+             ot.hit,
+             ot.regDate,
+             ot.userNo,
+             ot.name 
+      from (select  b.no,
+                    b.title,
+                    b.content,
+                    b.hit,
+                    to_char(b.reg_date, 'YYYY-MM-DD HH:MI') regDate,
+                    b.user_no userNo,
+                    u.name        
+            from board b, users u
+            where b.user_no = u.no
+            order by b.no asc
+            ) ot
+      ) ort   
+where rn >= 151
+and   rn <= 160;
+
+
+
+--select tatal글 갯수
+select count(*) count
+from board;
+
 
 
 
@@ -215,6 +272,7 @@ set title = 'asd',
     content = 'asd'
 where no = 10;
 
+
 --delete
 delete board
 where no = 5;
@@ -230,6 +288,95 @@ from board;
 commit;
 
 rollback;
+
+
+
+-----------------------------------------------------------------------------
+--gallery
+
+
+
+drop table gallery;
+drop SEQUENCE seq_gallery_no;
+
+
+-- gallery table 생성
+create table gallery(
+    no          number,
+    user_no     number,
+    content     varchar2(1000),
+    file_path   varchar2(500),
+    org_name    varchar2(500),
+    save_name   varchar2(500),
+    file_size   number,
+    primary key(no),
+    constraint gallery_fk foreign key (user_no) references users(no)
+  --   제약      샌즈     FK  (내 테이블 컬럼)  참조   참조할 테이블(칼럼)
+);
+
+
+--sequence 생성
+create SEQUENCE seq_gallery_no
+INCREMENT by 1
+start with 1
+nocache;
+
+
+
+--select
+select  g.no,
+        g.user_no userNo,
+        u.name,
+        g.content,
+        g.file_path filePath,
+        g.org_name orgName,
+        g.save_name saveName,
+        g.file_size fileSize
+from gallery g, users u
+where g.user_no = u.no
+order by no desc;
+
+
+--select one
+select  no,
+        user_no userNo,
+        content,
+        file_path filePath,
+        org_name orgName,
+        save_name saveName,
+        file_size fileSize
+from gallery
+where user_no = 1;
+
+
+
+--insert
+insert into gallery
+values(seq_gallery_no.nextval, 1, '수아앗!', 'C:\javaStudy\upload\test_sua.png', 'test_sua.png', 'test_sua.png', 314);
+
+insert into gallery
+values(seq_gallery_no.nextval, 2, '허이고~', 'C:\javaStudy\upload\test_mimiru.png', 'test_mimiru.png', 'test_mimiru.png', 222);
+
+insert into gallery
+values(seq_gallery_no.nextval, 3, '세은아...', 'C:\javaStudy\upload\test_arin.png', 'test_arin.png', 'test_arin.png', 501);
+
+
+
+--delete
+delete from gallery
+where no = 6;
+
+
+
+select *
+from gallery;
+
+
+
+commit;
+
+rollback;
+
 
 
 
